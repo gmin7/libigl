@@ -95,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: [Release]
+        config: [Debug]
         static: [ON, OFF]
     steps:
       - name: Checkout repository
