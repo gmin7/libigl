@@ -11,8 +11,8 @@ env:
 jobs:
   ####################
   # Linux / macOS
-  #######################
-     
+  ####################
+
   # Unix:
   #   name: ${{ matrix.name }} (${{ matrix.config }}, ${{ matrix.static }})
   #   runs-on: ${{ matrix.os }}
@@ -20,7 +20,7 @@ jobs:
   #     fail-fast: false
   #     matrix:
   #       os: [ubuntu-18.04, macos-latest]
-  #       config: [Release, Debug]
+  #       config: [Release]
   #       static: [ON, OFF]
   #       include:
   #         - os: macos-latest
@@ -28,7 +28,7 @@ jobs:
   #         - os: ubuntu-18.04
   #           name: Linux
   #   env:
-  #     LIBIGL_NUM_THREADS: 1  # See https://github.com/libigl/libigl/pull/996, run in single-thread mode
+  #     LIBIGL_NUM_THREADS: 1  # See https://github.com/libigl/libigl/pull/996
   #   steps:
   #     - name: Checkout repository
   #       uses: actions/checkout@v1
@@ -38,7 +38,6 @@ jobs:
   #     - name: Dependencies (Linux)
   #       if: runner.os == 'Linux'
   #       run: |
-  #           sudo apt-get update --fix-missing
   #           sudo apt-get install \
   #           libblas-dev \
   #           libboost-filesystem-dev \
@@ -49,7 +48,6 @@ jobs:
   #           libmpfr-dev \
   #           xorg-dev \
   #           ccache
-
   #     - name: Dependencies (macOS)
   #       if: runner.os == 'macOS'
   #       run: brew install boost gmp mpfr ccache
@@ -58,14 +56,13 @@ jobs:
   #       id: cache-build
   #       uses: actions/cache@v1
   #       with:
-  #         path: ~/.ccache # Directory where we will save the cache
-  #         key: ${{ runner.os }}-${{ matrix.config }}-${{ matrix.static }}-cache # Explicit key for restoring the cache
+  #         path: ~/.ccache
+  #         key: ${{ runner.os }}-${{ matrix.config }}-${{ matrix.static }}-cache
 
   #     - name: Prepare ccache
   #       run: |
   #         ccache --max-size=1.0G
   #         ccache -V && ccache --show-stats && ccache --zero-stats
-
   #     - name: Configure
   #       run: |
   #         mkdir -p build
@@ -76,7 +73,6 @@ jobs:
   #           -DLIBIGL_USE_STATIC_LIBRARY=${{ matrix.static }} \
   #           -DLIBIGL_WITH_CGAL=ON \
   #           -DLIBIGL_WITH_COMISO=ON
-
   #     - name: Build
   #       run: cd build; make -j2; ccache --show-stats
 
@@ -95,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: [Debug]
+        config: [Release]
         static: [ON, OFF]
     steps:
       - name: Checkout repository
@@ -121,7 +117,6 @@ jobs:
           scoop install sccache --global
           # Scoop modifies the PATH so we make the modified PATH global.
           echo "::set-env name=PATH::$env:PATH"
-
         # We run configure + build in the same step, since they both need to call VsDevCmd
         # Also, cmd uses ^ to break commands into multiple lines (in powershell this is `)
       - name: Configure and build
@@ -137,7 +132,5 @@ jobs:
             -B build ^
             -S .
           cmake --build build
-
       - name: Tests
         run: cd build; ctest --verbose
-
