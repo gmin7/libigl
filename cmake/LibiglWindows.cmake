@@ -1,6 +1,5 @@
 if(MSVC)
 	option(IGL_STATIC_RUNTIME "Use libigl with the static MSVC runtime." OFF)
-	set(MSVC_RUNTIME "static")		
 	if(IGL_STATIC_RUNTIME)
 		message(STATUS "MSVC -> forcing use of statically-linked runtime.")
 		foreach(config ${CMAKE_CONFIGURATION_TYPES})
@@ -18,6 +17,7 @@ if(MSVC)
 		endforeach()
 		string(REPLACE "/MTd" "/MDd" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 	endif()
+
 	# https://github.com/mozilla/sccache/issues/242
 	if(CMAKE_CXX_COMPILER_LAUNCHER STREQUAL "sccache")
 		string(REGEX REPLACE "/Z[iI7]" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")

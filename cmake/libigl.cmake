@@ -178,8 +178,6 @@ function(compile_igl_module module_dir)
         # This one is when using bools in adjacency matrices
         /wd4804 #'+=': unsafe use of type 'bool' in operation
       )
-    else()
-      #target_compile_options(${module_libname} PRIVATE -w) # disable all warnings (not ideal but...)
     endif()
   else()
     add_library(${module_libname} INTERFACE)
@@ -301,18 +299,18 @@ if(LIBIGL_WITH_EMBREE)
   set(EMBREE_DIR "${LIBIGL_EXTERNAL}/embree")
 
   if(NOT TARGET embree)
-    # TODO: Should probably save/restore the CMAKE_CXX_FLAGS_*, since embree seems to be
-    # overriding them on Windows. But well... it works for now.
     igl_download_embree()
-    set(EMBREE_TESTING_INTENSITY 0 CACHE STRING "" FORCE)
-    set(EMBREE_ISPC_SUPPORT OFF CACHE BOOL " " FORCE)
-    set(EMBREE_TASKING_SYSTEM "INTERNAL" CACHE BOOL " " FORCE)
-    set(EMBREE_TUTORIALS OFF CACHE BOOL " " FORCE)
-    set(EMBREE_MAX_ISA "SSE2" CACHE STRING " " FORCE)
-    set(EMBREE_STATIC_LIB ON CACHE BOOL " " FORCE)
+
+    set(EMBREE_TESTING_INTENSITY 0 CACHE STRING "")
+    set(EMBREE_ISPC_SUPPORT OFF CACHE BOOL " ")
+    set(EMBREE_TASKING_SYSTEM "INTERNAL" CACHE BOOL " ")
+    set(EMBREE_TUTORIALS OFF CACHE BOOL " ")
+    set(EMBREE_MAX_ISA "SSE2" CACHE STRING " ")
+    set(EMBREE_STATIC_LIB ON CACHE BOOL " ")
     if(MSVC)
-      set(EMBREE_STATIC_RUNTIME ON CACHE BOOL " " FORCE)
+      set(EMBREE_STATIC_RUNTIME ${IGL_STATIC_RUNTIME} CACHE BOOL "Use the static version of the C/C++ runtime library.")
     endif()
+
     add_subdirectory("${EMBREE_DIR}" "embree" EXCLUDE_FROM_ALL)
   endif()
 
@@ -569,4 +567,3 @@ install(EXPORT igl-export DESTINATION ${CMAKE_INSTALL_DATADIR}/libigl/cmake FILE
 
 
 export(PACKAGE libigl)
-
