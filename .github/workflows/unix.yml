@@ -19,12 +19,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, macos-latest]
+        # os: [ubuntu-18.04, macos-latest]
+        os: [ubuntu-18.04]
         config: [Release]
         static: [ON, OFF]
         include:
-          - os: macos-latest
-            name: macOS
+          # - os: macos-latest
+          #   name: macOS
           - os: ubuntu-18.04
             name: Linux
     env:
@@ -47,7 +48,7 @@ jobs:
             libglu1-mesa-dev \
             liblapack-dev \
             libmpfr-dev \
-            xorg-dev -fix-missing \
+            xorg-dev --fix-missing \
             ccache
       - name: Dependencies (macOS)
         if: runner.os == 'macOS'
