@@ -47,7 +47,6 @@ jobs:
             libglu1-mesa-dev \
             liblapack-dev \
             libmpfr-dev \
-            xorg-dev --fix-missing \
             ccache
       - name: Dependencies (macOS)
         if: runner.os == 'macOS'
