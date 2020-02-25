@@ -44,7 +44,7 @@ jobs:
       - name: Prepare sccache
         run: |
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          scoop install sccache --global
+          # scoop install sccache --global
           # Scoop modifies the PATH so we make the modified PATH global.
           echo "::set-env name=PATH::$env:PATH"
         # We run configure + build in the same step, since they both need to call VsDevCmd
