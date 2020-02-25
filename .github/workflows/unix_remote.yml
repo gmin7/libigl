@@ -48,7 +48,7 @@ jobs:
               liblapack-dev \
               libmpfr-dev \
               xorg-dev \
-              ccache
+              ccache --fix-missing
 
       - name: Dependencies (macOS)
         if: runner.os == 'macOS'
