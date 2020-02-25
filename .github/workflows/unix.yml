@@ -44,7 +44,7 @@ jobs:
             libboost-filesystem-dev \
             libboost-system-dev \
             libboost-thread-dev \
-            libglu1-mesa-dev \
+            xorg-dev libglu1-mesa-dev \
             liblapack-dev \
             libmpfr-dev \
             ccache
