@@ -48,7 +48,7 @@ jobs:
               libglu1-mesa-dev \
               liblapack-dev \
               libmpfr-dev \
-              xserver-xorg-dev \
+              xorg-dev \
               ccache
 
       - name: Dependencies (macOS)
