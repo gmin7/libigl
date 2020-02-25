@@ -1,4 +1,4 @@
-name: Windows Build Remote
+name: Windows Build Local
 
 on:
   push: {}
