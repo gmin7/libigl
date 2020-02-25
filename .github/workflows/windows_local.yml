@@ -14,14 +14,14 @@ jobs:
   ####################
 
   Windows:
-    runs-on: windows-2019
+    runs-on: self-hosted
     env:
       CC: cl.exe
       CXX: cl.exe
     strategy:
       fail-fast: false
       matrix:
-        config: [Debug]
+        config: [Release]
         static: [ON, OFF]
     steps:
       - name: Checkout repository
@@ -52,7 +52,7 @@ jobs:
       - name: Configure and build
         shell: cmd
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=x64
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat" -arch=x64
           cmake -G Ninja -V ^
             -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
             -DCMAKE_BUILD_TYPE=${{ matrix.config }} ^
