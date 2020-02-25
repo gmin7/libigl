@@ -227,6 +227,8 @@ if(LIBIGL_WITH_CGAL)
     message("BOOST_ROOT: ${BOOST_ROOT}")
     if(EXISTS ${LIBIGL_EXTERNAL}/boost)
       set(BOOST_ROOT "${LIBIGL_EXTERNAL}/boost")
+    else()
+      set(BOOST_ROOT "/Users/mish/Documents/boost_1_72_0")
     endif()
     option(CGAL_Boost_USE_STATIC_LIBS "Use static Boost libs with CGAL" ON)
 
