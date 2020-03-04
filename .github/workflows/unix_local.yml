@@ -15,7 +15,7 @@ jobs:
 
   Unix:
     name: Unix Local
-    runs-on: selh-hosted
+    runs-on: self-hosted
     strategy:
       fail-fast: false
     env:
