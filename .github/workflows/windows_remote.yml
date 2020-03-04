@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: [Debug]
+        config: [Debug, Release]
         static: [ON, OFF]
     steps:
       - name: Checkout repository
