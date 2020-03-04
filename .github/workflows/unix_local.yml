@@ -1,0 +1,70 @@
+name: Unix Builds Local
+
+on:
+  push: {}
+  pull_request: {}
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: ON
+  CTEST_PARALLEL_LEVEL: 2
+
+jobs:
+  ####################
+  # Linux / macOS
+  ####################
+
+  Unix:
+    name: Unix Local
+    runs-on: selh-hosted
+    strategy:
+      fail-fast: false
+    env:
+      LIBIGL_NUM_THREADS: 1  # See https://github.com/libigl/libigl/pull/996
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+            sudo apt-get update
+            sudo apt-get install \
+              libblas-dev \
+              libboost-filesystem-dev \
+              libboost-system-dev \
+              libboost-thread-dev \
+              libglu1-mesa-dev \
+              liblapack-dev \
+              libmpfr-dev \
+              xorg-dev \
+              ccache
+
+      - name: Cache Build
+        id: cache-build
+        uses: actions/cache@v1
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-${{ matrix.config }}-${{ matrix.static }}-cache
+
+      - name: Prepare ccache
+        run: |
+          ccache --max-size=1.0G
+          ccache -V && ccache --show-stats && ccache --zero-stats
+      - name: Configure
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config }} \
+            -DLIBIGL_USE_STATIC_LIBRARY=${{ matrix.static }} \
+            -DLIBIGL_WITH_CGAL=ON \
+            -DLIBIGL_WITH_COMISO=ON
+      - name: Build
+        run: cd build; make -j2; ccache --show-stats
+
+      - name: Tests
+        run: cd build; ctest --verbose
+
