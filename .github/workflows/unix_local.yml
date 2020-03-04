@@ -18,6 +18,9 @@ jobs:
     runs-on: self-hosted
     strategy:
       fail-fast: false
+      matrix:
+        config: [Release, Debug]
+        static: [ON, OFF]
     env:
       LIBIGL_NUM_THREADS: 1  # See https://github.com/libigl/libigl/pull/996
     steps:
